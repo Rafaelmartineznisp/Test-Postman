@@ -46,44 +46,6 @@
 			"response": []
 		},
 		{
-			"name": "Estado de la API fallido",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(2000);\r",
-							"});\r",
-							"\r",
-							"const response= pm.response.json();\r",
-							"console.log(response);\r",
-							"\r",
-							"pm.test(\"Status should be Ok Failed\", () =>{\r",
-							"    pm.expect(response.status).to.eql(\"Bn\"); \r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseUrl}}/status",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"status"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Registrar Cliente Exitoso",
 			"event": [
 				{
@@ -158,8 +120,16 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"pm.test(\"Status code is 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});\r",
+							"\r",
+							"var response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Registro de clinete fallido\",()=>{\r",
+							"\r",
+							"pm.expect(response.error).to.eql(\"API client already registered. Try a different email.\");\r",
+							"\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -455,8 +425,8 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\",() =>{\r",
-							"    pm.response.to.have.status(200);\r",
+							"pm.test(\"Status code is 404\",() =>{\r",
+							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"\r",
 							"const response = pm.response.json();\r",
@@ -559,11 +529,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 201\",()=> {\r",
-							"    pm.response.to.have.status(201);\r",
+							"pm.test(\"Status code is 400\",()=> {\r",
+							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							"const response = pm.response.json();\r",
-							"pm.globals.set(\"orderId\", response.orderId);\r",
 							" console.log(response);\r",
 							"\r",
 							"\r",
@@ -790,8 +759,8 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\",()=> {\r",
-							"    pm.response.to.have.status(200);\r",
+							"pm.test(\"Status code is 404\",()=> {\r",
+							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"var response = pm.response.json();\r",
 							"console.log(response);\r",
@@ -904,10 +873,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 204\",()=> {\r",
-							"    pm.response.to.have.status(204);\r",
+							"pm.test(\"Status code is 404\",()=> {\r",
+							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"\r",
+							"var response= pm.response.json();\r",
+							"pm.test(\"actualizacion de orden  fallido \", () => {\r",
+							"pm.expect(response.error).to.eql(\"No order with id 122.\");\r",
+							"});\r",
 							""
 						],
 						"type": "text/javascript"
@@ -1018,8 +991,12 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 204\",()=> {\r",
-							"    pm.response.to.have.status(204);\r",
+							"pm.test(\"Status code is 404\",()=> {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"var response= pm.response.json();\r",
+							"pm.test(\"Eliminacion de orden  fallida \", () => {\r",
+							"pm.expect(response.error).to.eql(\"No order with id ffffff.\");\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -1066,6 +1043,64 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Solicitar  Libro",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\",()=> {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"const response = pm.response.json();\r",
+							"pm.globals.set(\"orderId\", response.orderId);\r",
+							" console.log(response);\r",
+							"\r",
+							"pm.test(\"order creation successful\", () => {\r",
+							"pm.expect(response.created).to.eql(true);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bookId\": 3,\r\n  \"customerName\": \"{{$randomFullName}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -1095,16 +1130,17 @@
 		},
 		{
 			"key": "accessToken",
-			"value": "---",
+			"value": "b9401a1d3c82e2cbd7db089021426e22ffc774a71a35c669e2fa7f69b779da16",
 			"type": "string"
 		},
 		{
 			"key": "UltimoToken ",
-			"value": ""
+			"value": "6be81edc7d23ea11aff824f6698ef14447bb52c8b3269d06fe988e716817dcab"
 		},
 		{
 			"value": "",
-			"type": "string"
+			"type": "string",
+			"disabled": true
 		}
 	]
 }
