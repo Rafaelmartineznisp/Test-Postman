@@ -1,0 +1,294 @@
+{
+	"info": {
+		"_postman_id": "c7354f86-af93-4f05-942f-2c8347f2aae8",
+		"name": "Rickandmorty  API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23405630"
+	},
+	"item": [
+		{
+			"name": "Listar personajes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var response= pm.response.json();\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"Listar personajes Exitoso\",()=>{\r",
+							"\r",
+							"   pm.expect(response.info.count).to.eql(826);\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Listar personajes Fallido\",()=>{\r",
+							"\r",
+							"   pm.expect(response.info.pages).to.eql(4);\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}",
+					"host": [
+						"{{baseUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar personajes  por paginas exitoso",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var response=pm.response.json();\r",
+							"//console.log(response.results);\r",
+							"pm.test(\"Listar personajes por pagina exitoso\",()=>{\r",
+							"    var personajes =response.results[10];\r",
+							"    pm.expect(personajes.name).to.equals(\"Tony\");\r",
+							"    console.log(personajes);\r",
+							"\r",
+							"    pm.collectionVariables.set(\"Idpersonaje\", personajes.id);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Listar personajes por pagina fallido\",()=>{\r",
+							"    var personajes =response.results[10];\r",
+							"    pm.expect(personajes.status).to.equals(\"Alive\");\r",
+							"    console.log(personajes);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}{{pagina27}}",
+					"host": [
+						"{{baseUrl}}{{pagina27}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar personajes  por paginas  fallido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"var response=pm.response.json();\r",
+							"//console.log(response.results);\r",
+							"pm.test(\"Listar personajes por pagina fallido \",()=>{\r",
+							"    pm.expect(response.error).to.equals(\"There is nothing here\");\r",
+							"   });\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}?page=88",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "88"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar un personaje",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var response=pm.response.json();\r",
+							"//console.log(response.results);\r",
+							"pm.test(\"Listar un personaje exitoso\",()=>{\r",
+							"   (pm.expect(response.name).to.equals(\"Tony\"));\r",
+							"  });\r",
+							"  \r",
+							"pm.test(\"Listar un personaje fallido\",()=>{\r",
+							"   (pm.expect(response.name).to.equals(\"Rafael\"));\r",
+							"  });\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}{{Idpersonaje}}",
+					"host": [
+						"{{baseUrl}}{{Idpersonaje}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar un personaje fallido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"var response=pm.response.json();\r",
+							"\r",
+							"pm.test(\"Listar personajes por pagina fallido \",()=>{\r",
+							"    pm.expect(response.error).to.equals(\"Character not found\");\r",
+							"   });\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}827",
+					"host": [
+						"{{baseUrl}}827"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar varios  personajes inexistentes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Listar personajes que no existen\",()=>{\r",
+							"\r",
+							"pm.expect(pm.response.text()).to.include(\"\");\r",
+							"\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Listar personajes que no existen fallido\",()=>{\r",
+							"//pm.expect([]).to.be.empty;\r",
+							"pm.expect(' ').to.be.empty;\r",
+							"    \r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}1001, 2000, 3000",
+					"host": [
+						"{{baseUrl}}1001, 2000, 3000"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "pagina27",
+			"value": "?page=27",
+			"type": "string"
+		},
+		{
+			"key": "baseUrl",
+			"value": "https://rickandmortyapi.com/api/character/",
+			"type": "string"
+		},
+		{
+			"key": "Idpersonaje",
+			"value": 531
+		}
+	]
+}

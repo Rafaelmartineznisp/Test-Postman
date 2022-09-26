@@ -1,0 +1,82 @@
+
+npm install -g newman // para instalar newman -- herramienta para los reportes de postman
+newman run Simple Book API .postman_test_run.json// para ejecutar la colleccion en el cmd (hay que ubicarse en la ruta del archivo)
+npm install -g newman-reporter-htmlextra // generar el archivo del reporte en html 
+
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+var response= pm.response.json();
+
+
+
+pm.test("Listar personajes Exitoso",()=>{
+
+   pm.expect(response.info.count).to.eql(826);
+    
+});
+
+pm.test("Listar personajes Fallido",()=>{
+
+   pm.expect(response.info.pages).to.eql(4);
+    
+}); 
+
+
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+var response=pm.response.json();
+//console.log(response.results);
+pm.test("Listar personajes por pagina exitoso",()=>{
+    var personajes =response.results[10];
+    pm.expect(personajes.name).to.equals("Tony");
+    console.log(personajes);
+
+    pm.globals.set("Idpersonaje", personajes.id);
+});
+
+pm.test("Listar personajes por pagina fallido",()=>{
+    var personajes =response.results[10];
+    pm.expect(personajes.status).to.equals("Alive");
+    console.log(personajes);
+});
+
+
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+var response=pm.response.json();
+//console.log(response.results);
+pm.test("Listar un personaje exitoso",()=>{
+   (pm.expect(response.name).to.equals("Tony"));
+  });
+  
+pm.test("Listar un personaje fallido",()=>{
+   (pm.expect(response.name).to.equals("Rafael"));
+  });
+
+
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("Listar personajes que no existen",()=>{
+
+pm.expect(pm.response.text()).to.include("");
+
+    
+});
+
+pm.test("Listar personajes que no existen fallido",()=>{
+//pm.expect([]).to.be.empty;
+pm.expect(' ').to.be.empty;
+    
+});
+
+
+
+
