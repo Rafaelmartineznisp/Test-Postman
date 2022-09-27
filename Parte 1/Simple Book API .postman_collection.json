@@ -34,9 +34,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/status",
+					"raw": "{{url}}/status",
 					"host": [
-						"{{baseUrl}}"
+						"{{url}}"
 					],
 					"path": [
 						"status"
@@ -61,7 +61,7 @@
 							"//console.log(response);\r",
 							"//console.log(json);\r",
 							"//pm.collectionVariables.set(\"UltimoToken \", response.accessToken);\r",
-							"pm.globals.set(\"TokenTest\", response.accessToken);\r",
+							"pm.collectionVariables.set(\"TokenTest\", response.accessToken);\r",
 							"\r",
 							"//var tt = pm.collectionVariables.get(\"UltimoToken\");\r",
 							"//ar tt = pm.collectionVariables.get(\"UltimoToken\");\r",
@@ -69,7 +69,7 @@
 							"pm.test(\"Registro de cliente exitoso\", () =>{\r",
 							"   // var test=response;\r",
 							"   //pm.expect((response.accessToken).to.equal(json));\r",
-							"    pm.expect(response.accessToken).to.equal(pm.globals.get(\"TokenTest\"));\r",
+							"    pm.expect(response.accessToken).to.equal(pm.collectionVariables.get(\"TokenTest\"));\r",
 							"   // pm.expect((jsonData.data.createLp.segmentId).to.equal(pm.collectionVariables.get(\"createdSegmentId\")));\r",
 							"   // console.log(test);\r",
 							"// pm.expect(response.id).to.equal(pm.globals.get(\"orderId\"));\r",
@@ -102,9 +102,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUrl}}/api-clients",
+					"raw": "{{url}}/api-clients",
 					"host": [
-						"{{baseUrl}}"
+						"{{url}}"
 					],
 					"path": [
 						"api-clients"
@@ -159,9 +159,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUrl}}/api-clients",
+					"raw": "{{url}}/api-clients",
 					"host": [
-						"{{baseUrl}}"
+						"{{url}}"
 					],
 					"path": [
 						"api-clients"
@@ -187,106 +187,10 @@
 							"   var movies = jsonData.find((x) => x.type == \"non-fiction\" && x.available== true);\r",
 							"     console.log(movies);\r",
 							"     pm.expect(movies.available).to.eql(true);\r",
-							"     pm.globals.set(\"bookId\", movies.id);\r",
+							"     pm.collectionVariables.set(\"bookId\", movies.id);\r",
 							"});\r",
 							"\r",
 							"\r",
-							"\r",
-							"\r",
-							"\r",
-							"\r",
-							"\r",
-							"\r",
-							"\r",
-							"\r",
-							"\r",
-							"\r",
-							"\r",
-							"//pm.test(\"Movies for type non-fiction \",()=>{\r",
-							"  // var movies = jsonData.find((x) => x.type == \"non-fiction\" && x.available== true);\r",
-							" //  var movies = jsonData.filter((x) => x.type == \"non-fiction\");\r",
-							"    //   movies.find(x => x.available== true);\r",
-							" //   console.log(movies);\r",
-							"   //var free1=free[0];\r",
-							"  //  pm.expect(free1.name).to.eql(\"Untamed\");\r",
-							"   //  pm.expect(movies.available).to.eql(true);\r",
-							"   //pm.globals.set(\"bookId\", nonFictioBooks[0].id);\r",
-							"//});\r",
-							"\r",
-							"\r",
-							"\r",
-							"\r",
-							"   \r",
-							"   //**const nonFictioBooks=response.filter((book)=>book.available === true);\r",
-							"//const book=nonFictioBooks[0];\r",
-							"//console.log(book);\r",
-							"//pm.test(\"Book Found\",() =>{\r",
-							"  //  pm.expect(book).to.be.an('object');\r",
-							"    //pm.expect(book.available).to.be.true;\r",
-							"    //pm.expect(book.available).to.eql(true);\r",
-							"    //pm.expect(book.available).to.eql(true);\r",
-							"//});\r",
-							"\r",
-							"  // pm.expect(free.id).eql(5);\r",
-							"\r",
-							"\r",
-							"    \r",
-							"    //const nonFictioBooks=response.filter((book)=>book.available === true)\r",
-							"\r",
-							"\r",
-							"\r",
-							"\r",
-							"\r",
-							"\r",
-							"\r",
-							"\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseUrl}}/books",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"books"
-					],
-					"query": [
-						{
-							"key": "type",
-							"value": "non-fiction",
-							"disabled": true
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Listar  libros  Fallido",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Codigo del esatdo es  200\",() =>{\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"var  jsonData = pm.response.json(); \r",
-							"console.log(jsonData);\r",
-							"\r",
-							"pm.test(\"Peliculas de tipo romanticas failed \",()=>{\r",
-							"    var libros = jsonData.filter((x) => x.type == \"fiction\");\r",
-							"    console.log(libros);\r",
-							"        pm.expect(jsonData.type).to.eql(\"Drama\");\r",
-							"       \r",
-							"});\r",
 							"\r",
 							"\r",
 							"\r",
@@ -475,7 +379,7 @@
 							"    pm.response.to.have.status(201);\r",
 							"});\r",
 							"const response = pm.response.json();\r",
-							"pm.globals.set(\"orderId\", response.orderId);\r",
+							"pm.collectionVariables.set(\"orderId\", response.orderId);\r",
 							" console.log(response);\r",
 							"\r",
 							"pm.test(\"order creation successful\", () => {\r",
@@ -638,62 +542,6 @@
 			"response": []
 		},
 		{
-			"name": "listar Ordenes  de los libros fallido",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\",() => {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"var jsondata = pm.response.json();\r",
-							"console.log(jsondata);\r",
-							"\r",
-							"pm.test(\"validar lista fallido\", () =>{\r",
-							"var user = jsondata.find(x => x.id=='GvP8oXNzwvfho0aEMcsM7');\r",
-							"pm.expect(user.customerName).eql(\"Rafael Martinez\");\r",
-							" console.log(user);\r",
-							"});\r",
-							"\r",
-							"\r",
-							"\r",
-							"\r",
-							"\r",
-							"\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{accessToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseUrl}}/orders",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"orders"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Qbtener una orden exitoso",
 			"event": [
 				{
@@ -707,7 +555,7 @@
 							"console.log(response);\r",
 							"\r",
 							"pm.test((\"Obtener orden exitoso \"),()=>{\r",
-							"    pm.expect(response.id).to.equal(pm.globals.get(\"orderId\"));\r",
+							"    pm.expect(response.id).to.equal(pm.collectionVariables.get(\"orderId\"));\r",
 							"});\r",
 							"\r",
 							"\r",
@@ -1138,9 +986,26 @@
 			"value": "6be81edc7d23ea11aff824f6698ef14447bb52c8b3269d06fe988e716817dcab"
 		},
 		{
-			"value": "",
-			"type": "string",
-			"disabled": true
+			"key": "orderIdfalso",
+			"value": "ffffff",
+			"type": "string"
+		},
+		{
+			"key": "bookIdfalso",
+			"value": "122",
+			"type": "string"
+		},
+		{
+			"key": "TokenTest",
+			"value": "d576df512232f3cdc5522b24e250a06b3fbcdc9ea18f05e6d9488e566a4a2962"
+		},
+		{
+			"key": "bookId",
+			"value": 5
+		},
+		{
+			"key": "orderId",
+			"value": "VdGb05AmMx3zZGQQQiq57"
 		}
 	]
 }
