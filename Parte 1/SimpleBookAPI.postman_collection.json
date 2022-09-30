@@ -54,25 +54,18 @@
 						"exec": [
 							"pm.test(\"Status code is 201\", function () {\r",
 							"    pm.response.to.have.status(201);\r",
+							"    pm.response.to.be.withBody; // body tiene que exitir\r",
+							"    pm.response.to.be.json; // además que sea un JSON válido\r",
 							"});\r",
 							"\r",
 							"const response= pm.response.json();\r",
-							"//var json = JSON.parse(responseBody);\r",
-							"//console.log(response);\r",
-							"//console.log(json);\r",
-							"//pm.collectionVariables.set(\"UltimoToken \", response.accessToken);\r",
+							"\r",
+							"\r",
 							"pm.collectionVariables.set(\"TokenTest\", response.accessToken);\r",
 							"\r",
-							"//var tt = pm.collectionVariables.get(\"UltimoToken\");\r",
-							"//ar tt = pm.collectionVariables.get(\"UltimoToken\");\r",
-							"\r",
 							"pm.test(\"Registro de cliente exitoso\", () =>{\r",
-							"   // var test=response;\r",
-							"   //pm.expect((response.accessToken).to.equal(json));\r",
-							"    pm.expect(response.accessToken).to.equal(pm.collectionVariables.get(\"TokenTest\"));\r",
-							"   // pm.expect((jsonData.data.createLp.segmentId).to.equal(pm.collectionVariables.get(\"createdSegmentId\")));\r",
-							"   // console.log(test);\r",
-							"// pm.expect(response.id).to.equal(pm.globals.get(\"orderId\"));\r",
+							"pm.expect(response.accessToken).to.equal(pm.collectionVariables.get(\"TokenTest\"));\r",
+							"\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -184,13 +177,14 @@
 							"console.log(jsonData);\r",
 							"\r",
 							"pm.test(\"Peliculas de tipo no ficcion exitoso\",()=>{\r",
-							"   var movies = jsonData.find((x) => x.type == \"non-fiction\" && x.available== true);\r",
+							"   var movies = jsonData.find((x) => x.type == \"non-fiction\" &&  x.available== true);\r",
 							"     console.log(movies);\r",
 							"     pm.expect(movies.available).to.eql(true);\r",
 							"     pm.collectionVariables.set(\"bookId\", movies.id);\r",
 							"});\r",
 							"\r",
-							"\r",
+							"let jsonData1=pm.response.json();\r",
+							"console.log(jsonData1);\r",
 							"\r",
 							"\r",
 							"\r",
@@ -336,8 +330,11 @@
 							"const response = pm.response.json();\r",
 							"console.log(response);\r",
 							"\r",
-							"pm.test(\"este libro no esta stock \",() =>{\r",
-							"    pm.expect(response.error);\r",
+							"pm.test(\"este libro no esta en inventario \",() =>{\r",
+							"    var IdLibroFalso=pm.collectionVariables.get(\"bookIdfalso\");\r",
+							"    console.log(IdLibroFalso);\r",
+							"    pm.expect(response.error).to.eqls(\"No book with id \"+ IdLibroFalso);\r",
+							"  \r",
 							"});\r",
 							"\r",
 							""
@@ -380,7 +377,7 @@
 							"});\r",
 							"const response = pm.response.json();\r",
 							"pm.collectionVariables.set(\"orderId\", response.orderId);\r",
-							" console.log(response);\r",
+							"console.log(response);\r",
 							"\r",
 							"pm.test(\"order creation successful\", () => {\r",
 							"pm.expect(response.created).to.eql(true);\r",
@@ -407,7 +404,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"bookId\": 3,\r\n  \"customerName\": \"{{$randomFullName}}\"\r\n}",
+					"raw": "{\r\n  \"bookId\": 1,\r\n  \"customerName\": \"{{$randomFullName}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -498,8 +495,8 @@
 							"console.log(jsondata);\r",
 							"\r",
 							"pm.test(\"validar lista exitoso\", () =>{\r",
-							"var user = jsondata.find(x => x.id=='GvP8oXNzwvfho0aEMcsM7');\r",
-							"pm.expect(user.customerName).eql(\"Lorena Wisozk\");\r",
+							"var user = jsondata.find(x => x.id=='e2zZ81GSNFLuckVs_hxQ1');\r",
+							"pm.expect(user.customerName).eql(\"Gwendolyn Gutmann DDS\");\r",
 							" console.log(user);\r",
 							"});\r",
 							"\r",
@@ -555,7 +552,7 @@
 							"console.log(response);\r",
 							"\r",
 							"pm.test((\"Obtener orden exitoso \"),()=>{\r",
-							"    pm.expect(response.id).to.equal(pm.collectionVariables.get(\"orderId\"));\r",
+							"pm.expect(response.id).to.equal(pm.collectionVariables.get(\"orderId\"));\r",
 							"});\r",
 							"\r",
 							"\r",
@@ -614,9 +611,16 @@
 							"console.log(response);\r",
 							"\r",
 							"\r",
+							"\r",
+							"\r",
 							"pm.test((\"Obtener orden fallido\"),()=>{\r",
-							"    pm.expect(response.error).to.equal(\"No order with id ffffff.\");\r",
+							"    var Idfalso = pm.collectionVariables.get(\"orderIdfalso\");\r",
+							"    console.log(Idfalso);\r",
+							"    pm.expect(response.error).to.equal(\"No order with id \"+ Idfalso + \".\");\r",
 							"});\r",
+							"\r",
+							"\r",
+							"//// revisar \r",
 							"\r",
 							""
 						],
@@ -665,7 +669,18 @@
 						"exec": [
 							"pm.test(\"Status code is 204\",()=> {\r",
 							"    pm.response.to.have.status(204);\r",
+							"   \r",
 							"});\r",
+							"var response= pm.response.text();\r",
+							"console.log(response);\r",
+							"\r",
+							"pm.test(\"Validar que el dody este vacio\",()=>{\r",
+							"    pm.expect(response).to.be.empty;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
 							"\r",
 							""
 						],
@@ -727,7 +742,8 @@
 							"\r",
 							"var response= pm.response.json();\r",
 							"pm.test(\"actualizacion de orden  fallido \", () => {\r",
-							"pm.expect(response.error).to.eql(\"No order with id 122.\");\r",
+							"    bookIdfalso=pm.collectionVariables.get(\"bookIdfalso\");\r",
+							"pm.expect(response.error).to.eql(\"No order with id \"+bookIdfalso+\".\");\r",
 							"});\r",
 							""
 						],
@@ -785,7 +801,12 @@
 						"exec": [
 							"pm.test(\"Status code is 204\",()=> {\r",
 							"    pm.response.to.have.status(204);\r",
-							"});"
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el dody este vacio\",()=>{\r",
+							"    pm.expect(pm.response.text()).to.be.empty;\r",
+							"});\r",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -843,8 +864,10 @@
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"var response= pm.response.json();\r",
+							"\r",
 							"pm.test(\"Eliminacion de orden  fallida \", () => {\r",
-							"pm.expect(response.error).to.eql(\"No order with id ffffff.\");\r",
+							"    var test = pm.collectionVariables.get(\"orderIdfalso\");\r",
+							"pm.expect(response.error).to.eql(\"No order with id \"+test+\".\");\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -903,7 +926,7 @@
 							"    pm.response.to.have.status(201);\r",
 							"});\r",
 							"const response = pm.response.json();\r",
-							"pm.globals.set(\"orderId\", response.orderId);\r",
+							"pm.collectionVariables.set(\"orderId\", response.orderId);\r",
 							" console.log(response);\r",
 							"\r",
 							"pm.test(\"order creation successful\", () => {\r",
@@ -978,7 +1001,7 @@
 		},
 		{
 			"key": "accessToken",
-			"value": "b9401a1d3c82e2cbd7db089021426e22ffc774a71a35c669e2fa7f69b779da16",
+			"value": "28c85b3334af28e2a2840e45a93a84d31bc7fabb40c8ec33e8326ef0daebe3da",
 			"type": "string"
 		},
 		{
@@ -996,16 +1019,16 @@
 			"type": "string"
 		},
 		{
+			"key": "orderId",
+			"value": "VdGb05AmMx3zZGQQQiq57"
+		},
+		{
 			"key": "TokenTest",
-			"value": "d576df512232f3cdc5522b24e250a06b3fbcdc9ea18f05e6d9488e566a4a2962"
+			"value": "e6cc315339162a92b2b70b1792b4e7005278cd13c24f0b0c5d54d90eed05c288"
 		},
 		{
 			"key": "bookId",
-			"value": 5
-		},
-		{
-			"key": "orderId",
-			"value": "VdGb05AmMx3zZGQQQiq57"
+			"value": ""
 		}
 	]
 }

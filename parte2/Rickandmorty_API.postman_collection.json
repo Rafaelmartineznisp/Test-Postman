@@ -21,17 +21,19 @@
 							"\r",
 							"\r",
 							"\r",
-							"pm.test(\"Listar personajes Exitoso\",()=>{\r",
+							"pm.test(\"Cantidad de personajes ok\",()=>{\r",
 							"\r",
 							"   pm.expect(response.info.count).to.eql(826);\r",
 							"    \r",
 							"});\r",
 							"\r",
-							"pm.test(\"Listar personajes Fallido\",()=>{\r",
+							"pm.test(\"Listar personajes \",()=>{\r",
 							"\r",
-							"   pm.expect(response.info.pages).to.eql(4);\r",
+							"   pm.expect(response.info.pages).to.eql(42);\r",
 							"    \r",
-							"});"
+							"});\r",
+							"\r",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -70,9 +72,9 @@
 							"    pm.collectionVariables.set(\"Idpersonaje\", personajes.id);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Listar personajes por pagina fallido\",()=>{\r",
+							"pm.test(\"Validar que  el estado del personaje tony es 'Dead' \",()=>{\r",
 							"    var personajes =response.results[10];\r",
-							"    pm.expect(personajes.status).to.equals(\"Alive\");\r",
+							"    pm.expect(personajes.status).to.equals(\"Dead\");\r",
 							"    console.log(personajes);\r",
 							"});\r",
 							""
@@ -106,7 +108,7 @@
 							"\r",
 							"var response=pm.response.json();\r",
 							"//console.log(response.results);\r",
-							"pm.test(\"Listar personajes por pagina fallido \",()=>{\r",
+							"pm.test(\"Validar que hay mensaje de error  \",()=>{\r",
 							"    pm.expect(response.error).to.equals(\"There is nothing here\");\r",
 							"   });\r",
 							"\r",
@@ -152,9 +154,8 @@
 							"   (pm.expect(response.name).to.equals(\"Tony\"));\r",
 							"  });\r",
 							"  \r",
-							"pm.test(\"Listar un personaje fallido\",()=>{\r",
-							"   (pm.expect(response.name).to.equals(\"Rafael\"));\r",
-							"  });\r",
+							"  \r",
+							"\r",
 							"\r",
 							"\r",
 							""
@@ -187,6 +188,7 @@
 							"});\r",
 							"\r",
 							"var response=pm.response.json();\r",
+							"console.log(response);\r",
 							"\r",
 							"pm.test(\"Listar personajes por pagina fallido \",()=>{\r",
 							"    pm.expect(response.error).to.equals(\"Character not found\");\r",
@@ -204,9 +206,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}827",
+					"raw": "{{baseUrl}}{{Idpersonajefalso}}",
 					"host": [
-						"{{baseUrl}}827"
+						"{{baseUrl}}{{Idpersonajefalso}}"
 					]
 				}
 			},
@@ -223,16 +225,10 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Listar personajes que no existen\",()=>{\r",
-							"\r",
-							"pm.expect(pm.response.text()).to.include(\"\");\r",
-							"\r",
-							"    \r",
-							"});\r",
 							"\r",
 							"pm.test(\"Listar personajes que no existen fallido\",()=>{\r",
 							"//pm.expect([]).to.be.empty;\r",
-							"pm.expect(' ').to.be.empty;\r",
+							"pm.expect(pm.response.json()).to.be.empty;\r",
 							"    \r",
 							"});\r",
 							"\r",
@@ -289,6 +285,11 @@
 		{
 			"key": "Idpersonaje",
 			"value": 531
+		},
+		{
+			"key": "Idpersonajefalso",
+			"value": "827",
+			"type": "string"
 		}
 	]
 }
